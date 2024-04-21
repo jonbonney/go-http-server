@@ -37,7 +37,7 @@
 <body>
     <div class="header">
         <h1>Serving Static Files with Go</h1>
-        <p>Learn how to easily serve static files with a Go HTTP server.</p>
+        <p>Learn how to easily serve static files with a Go HTTP server, including HTML, CSS, and JavaScript.</p>
     </div>
     <div class="content">
         <h2>Introduction</h2>
@@ -47,7 +47,15 @@
         <p>Before you begin, you should have the following installed on your computer:</p>
         <ul>
             <li>Go (at least version 1.11 to use Go modules)</li>
+            <li>Git (for version control)</li>
         </ul>
+
+        <h2>Optional: Set Up Version Control with Git</h2>
+        <p>To manage your project with Git, initialize a new repository:</p>
+        <pre><code>git init
+git add .
+git commit -m "Initial commit"</code></pre>
+        <p>Remember to create a `.gitignore` file to exclude files that should not be tracked (e.g., executable files).</p>
 
         <h2>Step 1: Create Your Project</h2>
         <p>Create a new directory for your project and navigate into it:</p>
@@ -57,20 +65,41 @@ cd go-static-server</code></pre>
         <h2>Step 2: Initialize a Go Module</h2>
         <p>Initialize a new Go module:</p>
         <pre><code>go mod init go-static-server</code></pre>
-        <p>Optionally, create a new Git repo and make your initial commit:</p>
-        <pre><code>git init<br>git add .<br>git commit -m "Initial commit"</code></pre>
 
         <h2>Step 3: Create the Static Files</h2>
-        <p>Create a directory called 'static' and place your HTML, CSS, and JavaScript files inside this directory. For example, here's a simple HTML file:</p>
+        <p>Create a directory called 'static' and place your HTML, CSS, and JavaScript files inside this directory. For example, here's a simple HTML file along with CSS and JavaScript:</p>
+        
+        <p><b>index.html</b></p>
         <pre><code>&lt;!DOCTYPE html&gt;
 &lt;html&gt;
 &lt;head&gt;
     &lt;title&gt;Welcome to Go Static Server&lt;/title&gt;
+    &lt;link rel="stylesheet" type="text/css" href="styles.css"&gt;
 &lt;/head&gt;
 &lt;body&gt;
-    &lt;h1&gt;Hello, World!&lt;/h1&gt;
+    &lt;h1 id="header"&gt;Hello, World!&lt;/h1&gt;
+    &lt;button onclick="changeColor()"&gt;Change Color&lt;/button&gt;
+    &lt;script src="script.js"&gt;&lt;/script&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
+
+        <p><b>styles.css</b></p>
+        <pre><code>body {
+    font-family: 'Arial', sans-serif;
+    background-color: #fff;
+    color: #333;
+    text-align: center;
+    padding: 20px;
+}
+
+h1 {
+    color: #333;
+}</code></pre>
+
+        <p><b>script.js</b></p>
+        <pre><code>function changeColor() {
+    document.getElementById('header').style.color = 'blue';
+}</code></pre>
 
         <h2>Step 4: Write the Server Code</h2>
         <p>Create a file named <code>main.go</code> in your project directory and add the following code:</p>
@@ -95,10 +124,17 @@ func main() {
         <h2>Step 5: Run Your Server</h2>
         <p>Run your server using the command:</p>
         <pre><code>go run main.go</code></pre>
-        <p>Now, open your web browser and visit <a href="http://localhost:8080">http://localhost:8080</a>. You should see your static HTML page.</p>
+        <p>Now, open your web browser and visit <a href="http://localhost:8080">http://localhost:8080</a>. You should see your styled and interactive static HTML page.</p>
+
+        <h2>Common Pitfalls</h2>
+        <ul>
+            <li><b>File Paths:</b> Ensure your file paths in HTML are correct relative to the directory specified in `http.FileServer`.</li>
+            <li><b>Port Availability:</b> Make sure the port 8080 is free, or modify the port number in the Go server code if necessary.</li>
+            <li><b>Browser Caching:</b> Sometimes changes do not appear because the browser caches the files. Try clearing the cache or use incognito mode to see changes.</li>
+        </ul>
 
         <h2>Conclusion</h2>
-        <p>In this tutorial, you've learned how to set up a basic HTTP server in Go that serves static files. This setup is suitable for hosting simple websites or the static portions of a web application.</p>
+        <p>In this tutorial, you've learned how to set up a basic HTTP server in Go that serves static files with added styling and interactivity. This setup is suitable for hosting simple websites or the static portions of a web application.</p>
     </div>
     <div class="footer">
         <p>Copyright &copy; 2023 GoStaticTutorial.com. All rights reserved.</p>
