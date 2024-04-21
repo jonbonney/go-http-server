@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Setting Up HTTP APIs with Go</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f4f4f4;
+            color: #333;
+        }
+        .header, .footer {
+            background: #20232a;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        .nav {
+            background: #333;
+            padding: 10px 0;
+            text-align: center;
+        }
+        .nav a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            font-size: 16px;
+        }
+        .content {
+            padding: 20px;
+            max-width: 600px;
+            margin: auto;
+        }
+        pre {
+            background-color: #eee;
+            padding: 15px;
+            overflow: auto;
+        }
+        code {
+            font-family: monospace;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Setting Up HTTP APIs with Go</h1>
+        <p>Learn how to create and manage RESTful APIs with Go.</p>
+    </div>
+    <div class="nav">
+        <a href="index.html">Home</a> |
+        <a href="static-tutorial.html">Static Files Tutorial</a> |
+        <a href="templating-tutorial.html">Templating Tutorial</a>
+    </div>
+    <div class="content">
+        <h2>Introduction</h2>
+        <p>This tutorial will teach you how to build a basic HTTP API in Go. We'll cover setting up a server, handling requests, and responding with JSON data.</p>
+
+        <h2>Prerequisites</h2>
+        <p>You should have a basic understanding of Go and have it installed on your system. Knowledge of HTTP methods and JSON is also beneficial.</p>
+
+        <h2>Step 1: Setup Your Go Server</h2>
+        <p>Start by creating a Go file, say <code>api.go</code>, where you will write your API logic:</p>
+        <pre><code>package main
+
+import (
+    "encoding/json"
+    "log"
+    "net/http"
+)
+
+type Message struct {
+    Text string `json:"text"`
+}
+
+func helloHandler(w http.ResponseWriter, r *http.Request) {
+    if r.Method != "GET" {
+        http.Error(w, "Unsupported method", http.StatusMethodNotAllowed)
+        return
+    }
+
+    response := Message{Text: "Hello, world!"}
+    w.Header().Set("Content-Type", "application/json")
+    json.NewEncoder(w).Encode(response)
+}
+
+func main() {
+    http.HandleFunc("/hello", helloHandler)
+    log.Println("Server listening on port 8080...")
+    log.Fatal(http.ListenAndServe(":8080", nil))
+}</code></pre>
+
+        <h2>Step 2: Test Your API</h2>
+        <p>Run your server:</p>
+        <pre><code>go run api.go</code></pre>
+        <p>Then, use a tool like curl to test your API:</p>
+        <pre><code>curl http://localhost:8080/hello</code></pre>
+        <p>You should receive a JSON response:</p>
+        <pre><code>{"text":"Hello, world!"}</code></pre>
+
+        <h2>Step 3: Expand Your API</h2>
+        <p>Add more endpoints to handle different resources and methods. Implement CRUD operations for a resource like Users or Products.</p>
+
+        <h2>Best Practices</h2>
+        <ul>
+            <li>Organize your API code into handlers and services for better maintainability.</li>
+            <li>Use middleware for common functionality like logging and authorization.</li>
+            <li>Document your API endpoints using tools like Swagger or Postman.</li>
+        </ul>
+
+        <h2>Conclusion</h2>
+        <p>By following this tutorial, you've learned the basics of setting up and testing HTTP APIs with Go. This foundation will help you build robust APIs for real-world applications.</p>
+    </div>
+    <div class="footer">
+        <p>Copyright &copy; 2024 ByteBlaze LLC. All rights reserved.</p>
+    </div>
+</body>
+</html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Using Go Templating</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f4f4f4;
+            color: #333;
+        }
+        .header, .footer {
+            background: #20232a;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        .nav {
+            background: #333;
+            padding: 10px 0;
+            text-align: center;
+        }
+        .nav a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            font-size: 16px;
+        }
+        .content {
+            padding: 20px;
+            max-width: 600px;
+            margin: auto;
+        }
+        pre {
+            background-color: #eee;
+            padding: 15px;
+            overflow: auto;
+        }
+        code {
+            font-family: monospace;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Using Go Templating</h1>
+        <p>Learn how to dynamically generate web pages with Go's templating engine.</p>
+    </div>
+    <div class="nav">
+        <a href="index.html">Home</a> |
+        <a href="static-tutorial.html">Static Files Tutorial</a> |
+        <a href="api-tutorial.html">HTTP API Tutorial</a>
+    </div>
+    <div class="content">
+        <h2>Introduction</h2>
+        <p>This tutorial explores how to use Go's templating engine to dynamically generate HTML pages. Templating is a powerful feature that allows you to separate your business logic from your HTML, making your code cleaner and more maintainable.</p>
+
+        <h2>Prerequisites</h2>
+        <p>Before starting this tutorial, you should be familiar with basic Go programming and have Go installed on your system.</p>
+
+        <h2>Step 1: Create a Template File</h2>
+        <p>First, create an HTML template file that Go will use to generate dynamic content. Save this as <code>layout.html</code> in a new <code>templates</code> directory.</p>
+        <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;{{.Title}}&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;{{.Heading}}&lt;/h1&gt;
+    &lt;p&gt;{{.Message}}&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+        <h2>Step 2: Set Up Your Go Program</h2>
+        <p>Create a new Go file, for example <code>main.go</code>, and set up your program to use the template:</p>
+        <pre><code>package main
+
+import (
+    "html/template"
+    "net/http"
+    "log"
+)
+
+func homeHandler(w http.ResponseWriter, r *http.Request) {
+    data := struct {
+        Title   string
+        Heading string
+        Message string
+    }{
+        Title:   "Welcome Page",
+        Heading: "Hello from Go!",
+        Message: "This is a dynamic page rendered using Go Templates.",
+    }
+
+    t, err := template.ParseFiles("templates/layout.html")
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    err = t.Execute(w, data)
+    if err != nil {
+        log.Fatal(err)
+    }
+}
+
+func main() {
+    http.HandleFunc("/", homeHandler)
+    log.Println("Server starting on port 8080...")
+    log.Fatal(http.ListenAndServe(":8080", nil))
+}</code></pre>
+
+        <h2>Step 3: Run Your Server</h2>
+        <p>Run your server using the command:</p>
+        <pre><code>go run main.go</code></pre>
+        <p>Visit <a href="http://localhost:8080">http://localhost:8080</a> in your browser to see the dynamically generated page.</p>
+
+        <h2>Best Practices</h2>
+        <ul>
+            <li>Keep your templates in a separate directory to organize your project structure.</li>
+            <li>Use meaningful names for your template placeholders to make your templates easier to understand and maintain.</li>
+            <li>Pre-parse your templates on application startup, rather than parsing them with each request, to improve performance.</li>
+        </ul>
+
+        <h2>Conclusion</h2>
+        <p>Go's templating engine provides a robust way to dynamically generate HTML content based on your application's needs. It separates the presentation layer from the logic, making your web applications easier to manage and extend.</p>
+    </div>
+    <div class="footer">
+        <p>Copyright &copy; 2024 ByteBlaze LLC. All rights reserved.</p>
+    </div>
+</body>
+</html>
