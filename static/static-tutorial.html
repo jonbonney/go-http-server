@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Serving Static Files with Go</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f4f4f4;
+            color: #333;
+        }
+        .header, .footer {
+            background: #20232a;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        .content {
+            padding: 20px;
+            max-width: 800px;
+            margin: auto;
+        }
+        pre {
+            background-color: #eee;
+            padding: 15px;
+            overflow: auto;
+        }
+        code {
+            font-family: monospace;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Serving Static Files with Go</h1>
+        <p>Learn how to easily serve static files with a Go HTTP server.</p>
+    </div>
+    <div class="content">
+        <h2>Introduction</h2>
+        <p>This tutorial will guide you through the steps to set up a basic HTTP server in Go that serves static files, such as HTML, CSS, and JavaScript files. Serving static files is a common requirement for many web applications.</p>
+
+        <h2>Prerequisites</h2>
+        <p>Before you begin, you should have the following installed on your computer:</p>
+        <ul>
+            <li>Go (at least version 1.11 to use Go modules)</li>
+        </ul>
+
+        <h2>Step 1: Create Your Project</h2>
+        <p>Create a new directory for your project and navigate into it:</p>
+        <pre><code>mkdir go-static-server
+cd go-static-server</code></pre>
+
+        <h2>Step 2: Initialize a Go Module</h2>
+        <p>Initialize a new Go module:</p>
+        <pre><code>go mod init go-static-server</code></pre>
+        <p>Optionally, create a new Git repo and make your initial commit:</p>
+        <pre><code>git init<br>git add .<br>git commit -m "Initial commit"</code></pre>
+
+        <h2>Step 3: Create the Static Files</h2>
+        <p>Create a directory called 'static' and place your HTML, CSS, and JavaScript files inside this directory. For example, here's a simple HTML file:</p>
+        <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Welcome to Go Static Server&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;Hello, World!&lt;/h1&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+        <h2>Step 4: Write the Server Code</h2>
+        <p>Create a file named <code>main.go</code> in your project directory and add the following code:</p>
+        <pre><code>package main
+
+import (
+    "net/http"
+)
+
+func main() {
+    // Set up file server handler
+    fs := http.FileServer(http.Dir("static"))
+    http.Handle("/", fs)
+
+    // Start server
+    println("Server starting on port 8080...")
+    if err := http.ListenAndServe(":8080", nil); err != nil {
+        println(err.Error())
+    }
+}</code></pre>
+
+        <h2>Step 5: Run Your Server</h2>
+        <p>Run your server using the command:</p>
+        <pre><code>go run main.go</code></pre>
+        <p>Now, open your web browser and visit <a href="http://localhost:8080">http://localhost:8080</a>. You should see your static HTML page.</p>
+
+        <h2>Conclusion</h2>
+        <p>In this tutorial, you've learned how to set up a basic HTTP server in Go that serves static files. This setup is suitable for hosting simple websites or the static portions of a web application.</p>
+    </div>
+    <div class="footer">
+        <p>Copyright &copy; 2023 GoStaticTutorial.com. All rights reserved.</p>
+    </div>
+</body>
+</html>
